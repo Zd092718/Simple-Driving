@@ -8,6 +8,7 @@ public class ScoreSystem : MonoBehaviour
     [SerializeField] TMP_Text scoreText;
     [SerializeField] float scoreMultiplier;
 
+    public const string HighScoreKey = "HighScore";
     float score;
 
     // Update is called once per frame
@@ -15,5 +16,15 @@ public class ScoreSystem : MonoBehaviour
     {
         score += Time.deltaTime * scoreMultiplier;
         scoreText.text = Mathf.FloorToInt(score).ToString();
+    }
+
+    private void OnDestroy()
+    {
+        int currentHighScore = PlayerPrefs.GetInt(HighScoreKey, 0);
+
+        if (score > currentHighScore)
+        {
+            PlayerPrefs.SetInt(HighScoreKey, Mathf.FloorToInt(score));
+        }
     }
 }
